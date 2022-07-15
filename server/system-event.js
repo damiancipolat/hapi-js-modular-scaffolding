@@ -26,6 +26,16 @@ const onProcessKill = server =>{
 //When in the server happen a uncaugth exception.
 const onException = err =>console.error({message:err});
 
+//Define system events.
+const registerEvents = (server)=>{
+
+  process.on('SIGINT', ()=>events.onProcessKill(server));
+  process.on('SIGTERM',()=>events.onProcessKill(server));
+  process.on('unhandledRejection', events.onException);
+  process.on('uncaughtException',  (err)=>events.onException(err));
+
+}
+
 module.exports = {
   onListen,
   onProcessKill,

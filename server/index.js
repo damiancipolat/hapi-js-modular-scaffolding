@@ -9,15 +9,8 @@ const {
 //Get system events.
 const events = require('./system-event');
 
-//Define system events.
-const registerEvents = (server)=>{
-
-    process.on('SIGINT', ()=>events.onProcessKill(server));
-    process.on('SIGTERM',()=>events.onProcessKill(server));
-    process.on('unhandledRejection', events.onException);
-    process.on('uncaughtException',  (err)=>events.onException(err));
-
-}
+//Load plugins.
+const authModule = require('../modules/auth');
 
 //Server start process.
 const boostrap = async ()=>{
@@ -37,21 +30,20 @@ const boostrap = async ()=>{
             port:server.port
         });
     
+        //Register plugins
+        await hapiServer.register(authModule, {routes: {prefix: '/auth'}});        
+
         //Listen.
         await hapiServer.start();
 
-        //Define events.
-        //registerEvents(hapiServer);
+        //Define events.        
         console.log(`> Server listening on ${server.host}:${server.port} - OK`);
 
     } catch(error){
-
         console.log('> Error on',error);
-
     }
 
 }
-
 
 //Start server.
 boostrap();
