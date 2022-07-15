@@ -41,7 +41,7 @@ const boostrap = async ()=>{
         await hapiServer.start();
 
         //Define events.
-        registerEvents(hapiServer);
+        //registerEvents(hapiServer);
         console.log(`> Server listening on ${server.host}:${server.port} - OK`);
 
     } catch(error){
@@ -51,7 +51,6 @@ const boostrap = async ()=>{
     }
 
 }
-
 
 
 //Start server.
